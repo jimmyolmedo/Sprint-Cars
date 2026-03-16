@@ -6,4 +6,5 @@ public class SOcars : ScriptableObject
     //variables
     public string carName;
     public Sprite icon;
+    public RuntimeAnimatorController animator;
 }

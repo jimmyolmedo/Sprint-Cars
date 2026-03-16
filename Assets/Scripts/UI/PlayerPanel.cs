@@ -23,16 +23,22 @@ public class PlayerPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        playerReference.onChangeCoin += changeCoin;
-        playerReference.onGetItem += GetItem;
-        PlayerReference.onLoseItem += LoseItem;
+        if(playerReference != null)
+        {
+            playerReference.onChangeCoin += changeCoin;
+            playerReference.onGetItem += GetItem;
+            PlayerReference.onLoseItem += LoseItem;
+        }
     }
 
     private void OnDisable()
     {
-        playerReference.onChangeCoin -= changeCoin;
-        playerReference.onGetItem -= GetItem;
-        PlayerReference.onLoseItem -= LoseItem;
+        if(playerReference != null)
+        {
+            playerReference.onChangeCoin -= changeCoin;
+            playerReference.onGetItem -= GetItem;
+            PlayerReference.onLoseItem -= LoseItem;
+        }
     }
 
     private void Update()

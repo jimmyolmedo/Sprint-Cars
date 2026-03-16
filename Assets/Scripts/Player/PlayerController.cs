@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Collider2D playerColl;
     [SerializeField] Rigidbody2D rb;
     [SerializeField] bool canMove = true;
-    bool inAnimation;
+    [SerializeField] GameObject directionObj;
 
     [Header("Rotation")]
     Vector3 velocity;
@@ -43,7 +43,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("BurstAceleration")]
     [SerializeField] int aditionalAceleration = 10;
-    [SerializeField] float burstTime = 3f;
+
+    [Header("mud State")]
+    bool inMud;
+    int mudMaxSpeed;//velocidad cuando este en el barro
 
     [Header("Shield")]
     [SerializeField] GameObject shieldObj;
@@ -148,21 +151,28 @@ public class PlayerController : MonoBehaviour
         SetAnimations();
         if (GameManager.CurrentState == GameState.Gameplay && state == PlayerState.enable)
         {
+            directionObj.gameObject.SetActive(true);
             RotatePlayer(velocity.x);
             Aceelerate();
             brake();
-            currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+            if (inMud) { currentSpeed = Mathf.Clamp(currentSpeed, 0, mudMaxSpeed); } else { currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed); }
+        }
+        else
+        {
+            directionObj.gameObject.SetActive(false);
         }
     }
 
     private void FixedUpdate()
     {
-        if (GameManager.CurrentState == GameState.Gameplay && state == PlayerState.enable && inRecoil == false)
+        if (GameManager.CurrentState == GameState.Gameplay && state == PlayerState.enable)
         {
             float totalForces = currentSpeed + aditionalsForces;
             if(totalForces < 0) { totalForces = 0; }
-
-            rb.linearVelocity = transform.up * totalForces;
+            if (!inRecoil)
+            {
+                rb.linearVelocity = transform.up * totalForces;
+            }
         }
         else
         {
@@ -276,6 +286,7 @@ public class PlayerController : MonoBehaviour
     {
         if(acelerated)
         {
+            if(!canMove) { return; }
             //aumentar gradualmente currentSpeed hasta llegar a MaxSpeed
             if(currentSpeed < maxSpeed)
             {
@@ -356,30 +367,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void BurstAcelerate()
+    public void BurstAcelerate(int burstTime)
     {
-        StartCoroutine(TimeToBurst());
+        StartCoroutine(TimeToBurst(burstTime));
     }
 
-    IEnumerator TimeToBurst()
+    IEnumerator TimeToBurst(int burstTime)
     {
-        int currentMaxSpeed = maxSpeed;//guarda la velocidad maxima del jugador en el momento
-
-        //le añade la velocidad adicional a su velocidad maxima y a la actual, por si el jugador ya llego a su limite se le de un extra de velocidad
-        maxSpeed += aditionalAceleration;
-        currentSpeed += aditionalAceleration;
+        aditionalsForces += aditionalAceleration;
 
         //espera el tiempo que dura la acceleracion
         yield return new WaitForSeconds(burstTime);
 
-        //se le devuelve su velocidad maxima una ves termine el tiempo del propulsor
-        maxSpeed = currentMaxSpeed;
-    }
-
-    public void LimitSpeed(int _maxSpeed, float _currentSpeed)
-    {
-        maxSpeed = _maxSpeed;
-        currentSpeed = _currentSpeed;
+        aditionalsForces -= aditionalAceleration;
     }
 
     #endregion
@@ -400,6 +400,7 @@ public class PlayerController : MonoBehaviour
     {
         spriteRenderer.sprite = car.icon;
         currentSprite = car.icon;
+        animator.runtimeAnimatorController = car.animator;
     }
 
     public void ChangeCoins(int value)
@@ -407,6 +408,12 @@ public class PlayerController : MonoBehaviour
         currentCoins += value;
         if(currentCoins < 0) {currentCoins = 0; }
         onChangeCoin?.Invoke(value);
+    }
+
+    public void MudState(bool _state)
+    {
+        inMud = _state;
+        mudMaxSpeed = (int)maxSpeed/3;
     }
 
     public void SwitchState(PlayerState _state)
@@ -438,13 +445,15 @@ public class PlayerController : MonoBehaviour
     #region Damage
     IEnumerator Recoil(GameObject other)
     {
+        canMove = false;
         inRecoil = true;
+        float speedValue = (currentSpeed / maxSpeed);
+        Debug.Log(speedValue);
+        currentSpeed = 0;
         rb.linearVelocity = Vector3.zero;
         velocity = Vector3.zero;
-        canMove = false;
         Vector2 direction = -transform.up;
-        rb.AddForce(direction * recoilForce * (currentSpeed / maxSpeed) * Time.deltaTime, ForceMode2D.Impulse);
-        currentSpeed = 0;
+        rb.AddForce(direction * recoilForce * speedValue, ForceMode2D.Impulse);
         yield return new WaitForSeconds(timeToRecoil);
         canMove = true;
         inRecoil = false;
@@ -503,7 +512,6 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
-        inAnimation = true;
         animator.Play("PlayerDeath");
         canGetDamage = false;
         playerColl.enabled = false;
@@ -523,7 +531,6 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(timeToRespawn);
 
-        inAnimation = false;
         animator.Play("PlayerRespawn");
         playerColl.enabled = true;
         canMove = true;

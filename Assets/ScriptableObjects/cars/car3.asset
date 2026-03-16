@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SOcars
   carName: car3
   icon: {fileID: -8290738097171246125, guid: 09d42253987f51245873c48c21c62247, type: 3}
+  animator: {fileID: 9100000, guid: 49941c71da8ce5e4e9604890bc6a1f0f, type: 2}
