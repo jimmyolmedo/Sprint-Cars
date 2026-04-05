@@ -7,6 +7,11 @@ public class BuySpeedUpgrade : BuyUpgrade
         base.OnEnable();
     }
 
+    protected override void Start()
+    {
+        base.Start();
+    }
+
     protected override void Buy()
     {
         playerReference.MaxSpeed += UpgradeValue;

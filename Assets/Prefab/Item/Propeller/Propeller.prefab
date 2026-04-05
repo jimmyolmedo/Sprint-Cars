@@ -47,3 +47,4 @@ MonoBehaviour:
   spawnPos: 0
   type: 1
   playerUser: {fileID: 0}
+  burstTime: 0.7

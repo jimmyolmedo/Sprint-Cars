@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class Bomb : Item
+public class Bomb : Item, Interactable
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void Interact(GameObject obj)
     {
-        if(collision.TryGetComponent(out PlayerController player))
+        if (obj.TryGetComponent(out PlayerController player))
         {
             //le quita la vida actual del jugador, de esta forma lo destruye al instante, luego este objeto se destruye
             player.GetDamage(player.CurrentHealth);

@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Rigidbody2D rb;
     [SerializeField] bool canMove = true;
     [SerializeField] GameObject directionObj;
+    [SerializeField] SpriteRenderer outline;
+    Color colorPlayer;
 
     [Header("Rotation")]
     Vector3 velocity;
@@ -42,7 +44,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float decelerationSpeed = 3;
 
     [Header("BurstAceleration")]
-    [SerializeField] int aditionalAceleration = 10;
+    [SerializeField] int aditionalAceleration = 3;
+    [SerializeField] bool isBursting;
 
     [Header("mud State")]
     bool inMud;
@@ -69,12 +72,13 @@ public class PlayerController : MonoBehaviour
     [Header("characterSelector")]
     public SlotCharacter slot;//slot donde se le cambiara la skin al personaje
     [SerializeField] SpriteRenderer spriteRenderer;
-    Sprite currentSprite;
+    bool isReady;
 
     [Header("Items")]
     [SerializeField] Item currentItem;
     [SerializeField] Transform frontSpawn;
     [SerializeField] Transform BackSpawn;
+    [SerializeField] int attackItem;
 
     [Header("rotateCoroutine")]
     [SerializeField] float angularVelocity = 360f;
@@ -127,6 +131,8 @@ public class PlayerController : MonoBehaviour
     }
     public int CurrentCoins { get => currentCoins;}
     public bool CanGetDamage { get => canGetDamage; set => canGetDamage = value; }
+    public bool IsReady { get => isReady; }
+    public Color PlayerColor { get => colorPlayer;}
 
     //methods
     #region unity methods
@@ -139,15 +145,18 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         playerInput.onActionTriggered += HandleInput;
+        GameManager.OnStateChange += RestoreReadyValue;
     }
 
     private void OnDisable()
     {
         playerInput.onActionTriggered -= HandleInput;
+        GameManager.OnStateChange -= RestoreReadyValue;
     }
 
     private void Update()
     {
+        //trabajar animaciones
         SetAnimations();
         if (GameManager.CurrentState == GameState.Gameplay && state == PlayerState.enable)
         {
@@ -192,6 +201,14 @@ public class PlayerController : MonoBehaviour
                 }
                 StartCoroutine(Recoil(collision.gameObject));
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.TryGetComponent(out Interactable interactable))
+        {
+            interactable.Interact(this.gameObject);
         }
     }
     #endregion
@@ -272,7 +289,12 @@ public class PlayerController : MonoBehaviour
     {
         if (context.action.name != "Start") { return; }
 
-        if (context.started) { onPressStart?.Invoke(); }
+        if (context.started)
+        {
+            isReady = !isReady;
+            if(slot != null) { slot.SetReady(isReady); }
+            onPressStart?.Invoke();
+        }
     }
     #endregion
 
@@ -367,19 +389,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void BurstAcelerate(int burstTime)
+    public void BurstAcelerate(float burstTime)
     {
         StartCoroutine(TimeToBurst(burstTime));
     }
 
-    IEnumerator TimeToBurst(int burstTime)
+    IEnumerator TimeToBurst(float burstTime)
     {
         aditionalsForces += aditionalAceleration;
+        isBursting = true;
 
         //espera el tiempo que dura la acceleracion
         yield return new WaitForSeconds(burstTime);
 
-        aditionalsForces -= aditionalAceleration;
+        if (isBursting)
+        {
+            aditionalsForces -= aditionalAceleration;
+            isBursting = false;
+        }
     }
 
     #endregion
@@ -389,6 +416,8 @@ public class PlayerController : MonoBehaviour
         currentControlPoints = 0;
         currentLap = 0;
         velocity = Vector3.zero;
+        currentItem = null;
+        CurrentHealth = maxHealth;
         rb.linearVelocity = Vector3.zero;
         acelerated = false;
         win = false;
@@ -399,8 +428,13 @@ public class PlayerController : MonoBehaviour
     public void ChangeCar(SOcars car)
     {
         spriteRenderer.sprite = car.icon;
-        currentSprite = car.icon;
         animator.runtimeAnimatorController = car.animator;
+
+        maxSpeed = car.defaultSpeed;
+        acelerationSpeed = car.aceleration;
+        rotationSpeed = car.rotationSpeed;
+        maxHealth = car.defaultHealth;
+        attackItem = car.attack;
     }
 
     public void ChangeCoins(int value)
@@ -422,12 +456,12 @@ public class PlayerController : MonoBehaviour
 
         if(state == PlayerState.disable)
         {
-            spriteRenderer.enabled = false;
+            spriteRenderer.gameObject.SetActive(false);
             playerColl.enabled = false;
         }
         else if(state == PlayerState.enable)
         {
-            spriteRenderer.enabled = true;
+            spriteRenderer.gameObject.SetActive(true);
             playerColl.enabled = true;
         }
     }
@@ -440,6 +474,40 @@ public class PlayerController : MonoBehaviour
 
         animator.SetFloat("InputX", dir.x);
         animator.SetFloat("InputY", dir.y);
+        if(GameManager.CurrentState == GameState.Gameplay)
+        {
+            if (acelerated)
+            {
+                animator.SetBool("Running", true);
+            }
+            else
+            {
+                animator.SetBool("Running", false);
+            }
+        }
+        else
+        {
+            animator.SetBool("Running", false);
+        }
+
+        OutLineSprite();
+    }
+
+    void OutLineSprite()
+    {
+        outline.sprite = spriteRenderer.sprite;
+        outline.color = colorPlayer;
+        outline.sortingOrder = spriteRenderer.sortingOrder -1;
+    }
+
+    public void setColor(Color _color)
+    {
+        colorPlayer = _color;
+    }
+
+    void RestoreReadyValue(GameState state)
+    {
+        isReady = false;
     }
 
     #region Damage
@@ -448,7 +516,7 @@ public class PlayerController : MonoBehaviour
         canMove = false;
         inRecoil = true;
         float speedValue = (currentSpeed / maxSpeed);
-        Debug.Log(speedValue);
+        if(isBursting) { aditionalsForces = 0; isBursting = false;}
         currentSpeed = 0;
         rb.linearVelocity = Vector3.zero;
         velocity = Vector3.zero;

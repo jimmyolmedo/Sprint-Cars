@@ -14,7 +14,7 @@ public class Proyectile : Item
     float detectionRadius = 5f;
 
     [Header("Movement")]
-    float speed = 10f;
+    [SerializeField] float speed = 10f;
     float arriveDistance = 0.1f;
 
     private bool isChasing = false;
@@ -74,9 +74,9 @@ public class Proyectile : Item
     {
         if(collision.TryGetComponent(out PlayerController player))
         {
-            player.GetDamage(damage);
+            if(player != playerUser) { player.GetDamage(damage); }
         }
-        Destroy(gameObject);
+        if(playerUser.gameObject != collision.gameObject) { Destroy(gameObject); }
     }
 
     void Update()

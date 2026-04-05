@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class SlotCharacterManager : MonoBehaviour
+public class SlotCharacterManager : UI_StartGame
 {
     public List<SOcars> SOcars = new List<SOcars>();
     [SerializeField] SlotCharacter[] Slots;
@@ -13,11 +15,13 @@ public class SlotCharacterManager : MonoBehaviour
     private void OnEnable()
     {
         PlayersManager.OnPlayersAdded += JoinCharacter;
+        PlayerController.onPressStart += startGame;
     }
 
     private void OnDisable()
     {
         PlayersManager.OnPlayersAdded -= JoinCharacter;
+        PlayerController.onPressStart -= startGame;
     }
 
     void JoinCharacter(PlayerController player)
@@ -33,4 +37,23 @@ public class SlotCharacterManager : MonoBehaviour
         }
     }
 
+    void startGame()
+    {
+        foreach (SlotCharacter slot in Slots)
+        {
+            if(slot.IsConnected && slot.Player.IsReady == false)
+            {
+                StopAllCoroutines();
+                startPanel.SetActive(false);
+                return;
+            }
+        }
+
+        if(LevelsManager.instance.Pressed == false){StartCoroutine(TimeToStartGame());};
+    }
+
+    protected override IEnumerator TimeToStartGame()
+    {
+        return base.TimeToStartGame();
+    }
 }

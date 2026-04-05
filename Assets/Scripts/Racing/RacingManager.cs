@@ -13,6 +13,7 @@ public class RacingManager : Singleton<RacingManager>
     [SerializeField] ControlPoints[] points;//puntos por los que el jugador tendra que pasar a lo largo de la carrera
     [SerializeField] Color[] colorPlayers;//color designado de cada jugador
     [SerializeField] int MaxLap = 3;//numero de vueltas que tendra que dar el jugador
+    [SerializeField] Goal goal;
 
     [Header("UI")]
     [SerializeField] TextMeshProUGUI startCount;//cuenta regresiva para iniciar la carrera
@@ -50,7 +51,7 @@ public class RacingManager : Singleton<RacingManager>
                Collider2D[] coll = Physics2D.OverlapCircleAll(points[position].positions[j], points[position].ranges[j]);
                 foreach(Collider2D coll2 in coll)
                 {
-                    if(coll2.transform == players[i].transform)
+                    if(coll2.TryGetComponent(out PlayerCollision playerCollision) && coll2.transform.parent == players[i].transform)
                     {
                         //si llego a su punto designado actualmente, se le asigna el siguiente punto
                         players[i].CurrentControlPoints++;
@@ -72,6 +73,7 @@ public class RacingManager : Singleton<RacingManager>
         {
             player.CurrentControlPoints = 0;//reinicia los puntos de control
             player.CurrentLap++;//le aumenta una vuelta
+            goal.ActivateParticles(player);
         }
         if (player.CurrentLap >= MaxLap) { CheckFinish(player); }//pregunta si el jugador dio todas las vueltas
     }
@@ -129,13 +131,10 @@ public class RacingManager : Singleton<RacingManager>
     {
         for (int i = 0; i < points.Length; i++)
         {
-            if (i >= players.Count)
+            for (int j = 0; j < points[i].positions.Length; j++)
             {
-                for (int j = 0; j < points[i].positions.Length; j++)
-                {
-                    Gizmos.color = points[i].colorPoint;
-                    Gizmos.DrawWireSphere(points[i].positions[j], points[i].ranges[j]);
-                }
+                Gizmos.color = points[i].colorPoint;
+                Gizmos.DrawWireSphere(points[i].positions[j], points[i].ranges[j]);
             }
         }
 

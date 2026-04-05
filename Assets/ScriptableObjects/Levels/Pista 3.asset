@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Pista 3
   m_EditorClassIdentifier: Assembly-CSharp::SOlevel
   levelName: Pista 3
-  icon: {fileID: 8019265613910855559, guid: c0596ebb5002d3144b33ed579465e9b9, type: 3}
+  icon: {fileID: 1329108027339759186, guid: 84fc22c083744db4fb6a73167a2efb01, type: 3}

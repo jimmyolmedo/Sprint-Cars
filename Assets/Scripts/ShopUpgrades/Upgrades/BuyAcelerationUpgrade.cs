@@ -7,6 +7,11 @@ public class BuyAcelerationUpgrade : BuyUpgrade
         base.OnEnable();
     }
 
+    protected override void Start()
+    {
+        base.Start();
+    }
+
     protected override void Buy()
     {
         playerReference.AcelerationSpeed += UpgradeValue;

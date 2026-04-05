@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class Coin : MonoBehaviour
+public class Coin : MonoBehaviour, Interactable
 {
     public SpawnCoin spawner;
     [SerializeField] int coinCount;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void Interact(GameObject obj)
     {
-        if(collision.TryGetComponent(out PlayerController player))
+        if (obj.TryGetComponent(out PlayerController player))
         {
             player.ChangeCoins(coinCount);
             //animacion del player de ganar monedas

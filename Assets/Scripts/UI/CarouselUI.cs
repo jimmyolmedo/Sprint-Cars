@@ -56,11 +56,6 @@ public class CarouselUI : MonoBehaviour
         }
 
         ScaleItems();
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            StartScrolling();
-        }
     }
 
     void UpdateItems()

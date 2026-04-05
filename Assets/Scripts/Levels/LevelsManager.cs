@@ -29,6 +29,7 @@ public class LevelsManager : Singleton<LevelsManager>
         }
         carousel.gameObject.SetActive(true);
         carousel.StartScrolling();
+        pressed = true;
         //StartCoroutine(ChooseLevel());
     }
 

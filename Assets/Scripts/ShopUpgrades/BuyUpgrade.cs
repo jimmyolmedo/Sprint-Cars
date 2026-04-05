@@ -5,7 +5,7 @@ public class BuyUpgrade : MonoBehaviour
 {
     //variables
     [SerializeField] protected int UpgradeValue;
-    [SerializeField] protected int startPrice;
+    [SerializeField] protected int startPrice = 3;
     protected int price;
     [SerializeField] protected int upPrice;
     [SerializeField] protected string savePrice;
@@ -20,6 +20,7 @@ public class BuyUpgrade : MonoBehaviour
     protected virtual void OnEnable()
     {
         price = PlayerPrefs.GetInt(savePrice + playerReference.PlayerName, startPrice);
+        if (price < startPrice) {  price = startPrice; }
     }
 
     protected virtual void Start()
