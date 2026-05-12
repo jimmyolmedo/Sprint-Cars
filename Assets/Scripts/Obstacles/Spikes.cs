@@ -50,9 +50,9 @@ public class Spikes : MonoBehaviour, Obstacles
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out PlayerController player))
+        if(collision.TryGetComponent(out PlayerCollision player))
         {
-            player.GetDamage(player.CurrentHealth);
+            player.Controller.GetDamage(player.Controller.CurrentHealth);
         }
     }
 }

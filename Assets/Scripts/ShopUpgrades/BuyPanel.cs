@@ -3,6 +3,7 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.UI;
 
 public class BuyPanel : MonoBehaviour
 {
@@ -10,9 +11,17 @@ public class BuyPanel : MonoBehaviour
     [SerializeField] MultiplayerEventSystem eventSystem;
     [SerializeField] InputSystemUIInputModule uiModule;
     [SerializeField] TextMeshProUGUI readyText;
+    PlayerController controller;
+    [SerializeField] Image playerSprite;
+
+    private void Update()
+    {
+        if(controller != null) { playerSprite.sprite = controller.Sp.sprite; }
+    }
 
     public void InitializeUpgrades(PlayerController player)
     {
+        controller = player;
         player.RestoreValues();
         SetEventSystem(player);
         player.SwitchState(PlayerState.enable);

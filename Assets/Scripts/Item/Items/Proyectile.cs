@@ -72,9 +72,9 @@ public class Proyectile : Item
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out PlayerController player))
+        if(collision.TryGetComponent(out PlayerCollision player))
         {
-            if(player != playerUser) { player.GetDamage(damage); }
+            if(player.Controller != playerUser) { player.Controller.GetDamage(damage); }
         }
         if(playerUser.gameObject != collision.gameObject) { Destroy(gameObject); }
     }

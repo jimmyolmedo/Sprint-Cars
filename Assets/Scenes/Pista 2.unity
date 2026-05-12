@@ -1633,7 +1633,7 @@ MonoBehaviour:
   - {r: 0.02520132, g: 0, b: 1, a: 1}
   - {r: 1, g: 0.9420621, b: 0, a: 1}
   - {r: 0, g: 1, b: 0.10208559, a: 1}
-  MaxLap: 3
+  maxLap: 5
   goal: {fileID: 1139869113}
   startCount: {fileID: 1254969804}
   scorevalues: 05000000030000000100000000000000

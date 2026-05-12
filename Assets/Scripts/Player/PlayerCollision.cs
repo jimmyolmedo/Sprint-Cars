@@ -4,6 +4,8 @@ public class PlayerCollision : MonoBehaviour, Ibridge
 {
     [SerializeField] PlayerController controller;
 
+    public PlayerController Controller { get => controller; }
+
     public void SetComponent(ref GameObject obj, ref SpriteRenderer spriteRenderer)
     {
         obj = this.gameObject;

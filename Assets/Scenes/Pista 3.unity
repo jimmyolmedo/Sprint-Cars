@@ -5855,7 +5855,7 @@ MonoBehaviour:
   - {r: 0.02520132, g: 0, b: 1, a: 1}
   - {r: 1, g: 0.9420621, b: 0, a: 1}
   - {r: 0, g: 1, b: 0.10208559, a: 1}
-  MaxLap: 3
+  maxLap: 5
   goal: {fileID: 813550808}
   startCount: {fileID: 1519874059}
   scorevalues: 05000000030000000100000000000000
@@ -14016,11 +14016,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1212293212175710561, guid: e60383cb63a5df442b9d2c2e502c6ca8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.132
+      value: -10.93
       objectReference: {fileID: 0}
     - target: {fileID: 1212293212175710561, guid: e60383cb63a5df442b9d2c2e502c6ca8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.595
+      value: -4.84
       objectReference: {fileID: 0}
     - target: {fileID: 1212293212175710561, guid: e60383cb63a5df442b9d2c2e502c6ca8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14441,11 +14441,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1212293212175710561, guid: e60383cb63a5df442b9d2c2e502c6ca8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.62
+      value: 7.16
       objectReference: {fileID: 0}
     - target: {fileID: 1212293212175710561, guid: e60383cb63a5df442b9d2c2e502c6ca8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.326
+      value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: 1212293212175710561, guid: e60383cb63a5df442b9d2c2e502c6ca8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14596,11 +14596,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1212293212175710561, guid: e60383cb63a5df442b9d2c2e502c6ca8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.69
+      value: -7.38
       objectReference: {fileID: 0}
     - target: {fileID: 1212293212175710561, guid: e60383cb63a5df442b9d2c2e502c6ca8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.14
+      value: 5.37
       objectReference: {fileID: 0}
     - target: {fileID: 1212293212175710561, guid: e60383cb63a5df442b9d2c2e502c6ca8, type: 3}
       propertyPath: m_LocalPosition.z

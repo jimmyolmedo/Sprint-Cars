@@ -12,7 +12,7 @@ public class RacingManager : Singleton<RacingManager>
     public List<PlayerController> players = new List<PlayerController>();//lista de jugadores
     [SerializeField] ControlPoints[] points;//puntos por los que el jugador tendra que pasar a lo largo de la carrera
     [SerializeField] Color[] colorPlayers;//color designado de cada jugador
-    [SerializeField] int MaxLap = 3;//numero de vueltas que tendra que dar el jugador
+    [SerializeField] int maxLap = 3;//numero de vueltas que tendra que dar el jugador
     [SerializeField] Goal goal;
 
     [Header("UI")]
@@ -26,6 +26,7 @@ public class RacingManager : Singleton<RacingManager>
     //properties
     protected override bool persistent => false;//no debe ser persistente, el singleton es solo para poder llamarlo desde otros scripts
     public ControlPoints[] Points { get => points; }
+    public int MaxLap { get => maxLap;}
 
     //methods
     private void Start()

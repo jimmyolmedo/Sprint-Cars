@@ -3,20 +3,19 @@ using UnityEngine;
 
 public class Mud : MonoBehaviour, Obstacles
 {
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out PlayerController playerController))
+        if(collision.TryGetComponent(out PlayerCollision playerController))
         {
-            playerController.MudState(true);
+            playerController.Controller.MudState(true);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out PlayerController playerController))
+        if (collision.TryGetComponent(out PlayerCollision playerController))
         {
-            playerController.MudState(false);
+            playerController.Controller.MudState(false);
         }
     }
 }

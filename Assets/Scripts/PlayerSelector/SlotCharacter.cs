@@ -11,6 +11,7 @@ public class SlotCharacter : MonoBehaviour
     [SerializeField] SOcars currentCar;
     [SerializeField] GameObject disconnectedPanel;
     PlayerController player;
+    [SerializeField] Image playerSprite;
     [SerializeField] GameObject connectedPanel;
     bool isConnected;
     int currentIndex;
@@ -32,6 +33,11 @@ public class SlotCharacter : MonoBehaviour
     public PlayerController Player { get => player; }
 
     //methods
+    private void Update()
+    {
+        if(playerSprite != null && player != null) { playerSprite.sprite = player.Sp.sprite; }
+    }
+
     public void Connected(PlayerController _player)
     {
         disconnectedPanel.SetActive(false);

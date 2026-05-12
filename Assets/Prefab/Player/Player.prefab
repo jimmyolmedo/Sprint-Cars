@@ -492,8 +492,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.017656764, y: -0.15297794}
-  m_Size: {x: 0.34361148, y: 0.5601031}
+  m_Offset: {x: -0.017656764, y: -0.25}
+  m_Size: {x: 0.5, y: 0.5601031}
   m_Direction: 0
 --- !u!114 &9159936027344928901
 MonoBehaviour:
@@ -569,7 +569,7 @@ MonoBehaviour:
   directionObj: {fileID: 4932699520702138484}
   outline: {fileID: 3493579561120723162}
   rotationSpeed: 100
-  maxSpeed: 7
+  maxSpeed: 5
   currentSpeed: 0
   aditionalsForces: 0
   acelerated: 0

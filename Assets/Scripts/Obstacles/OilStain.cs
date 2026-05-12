@@ -5,10 +5,11 @@ public class OilStain : MonoBehaviour, Obstacles
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out PlayerController playerController))
+        if(collision.TryGetComponent(out PlayerCollision playerController))
         {
             //hacer que el jugador pierda el control del vehiculo
-            playerController.LoseControl();
+            playerController.Controller.LoseControl();
+            Debug.Log("lost control");
         }
     }
 }

@@ -5,9 +5,9 @@ public class AcelerateObstacle : MonoBehaviour, Obstacles
     [SerializeField] float burstTime = .5f;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out PlayerController player))
+        if(collision.TryGetComponent(out PlayerCollision player))
         {
-            player.BurstAcelerate(burstTime);
+            player.Controller.BurstAcelerate(burstTime);
         }
     }
 }

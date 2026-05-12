@@ -19,7 +19,6 @@ public class UI_StartGame : MonoBehaviour
             timer--;
             yield return new WaitForSeconds(1);
         }
-
         LevelsManager.instance.NextLevel();
     }
 

@@ -291,8 +291,11 @@ public class PlayerController : MonoBehaviour
 
         if (context.started)
         {
-            isReady = !isReady;
-            if(slot != null) { slot.SetReady(isReady); }
+            if(LevelsManager.instance.Pressed == false)
+            {
+                isReady = !isReady;
+                if (slot != null) { slot.SetReady(isReady); }
+            }
             onPressStart?.Invoke();
         }
     }
