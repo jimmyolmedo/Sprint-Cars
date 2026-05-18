@@ -2,12 +2,20 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class RacingManager : Singleton<RacingManager>
 {
+    public enum RacingType
+    {
+        Gameplay,
+        tutorial
+    }
     //variables
+    [SerializeField] RacingType type = RacingType.Gameplay;
+
     [Header("race")]
     public List<PlayerController> players = new List<PlayerController>();//lista de jugadores
     [SerializeField] ControlPoints[] points;//puntos por los que el jugador tendra que pasar a lo largo de la carrera
@@ -27,6 +35,7 @@ public class RacingManager : Singleton<RacingManager>
     protected override bool persistent => false;//no debe ser persistente, el singleton es solo para poder llamarlo desde otros scripts
     public ControlPoints[] Points { get => points; }
     public int MaxLap { get => maxLap;}
+    public RacingType Type { get => type; }
 
     //methods
     private void Start()
@@ -76,7 +85,7 @@ public class RacingManager : Singleton<RacingManager>
             player.CurrentLap++;//le aumenta una vuelta
             goal.ActivateParticles(player);
         }
-        if (player.CurrentLap >= MaxLap) { CheckFinish(player); }//pregunta si el jugador dio todas las vueltas
+        if (player.CurrentLap >= MaxLap && type != RacingType.tutorial) { CheckFinish(player); }//pregunta si el jugador dio todas las vueltas
     }
 
     public void StartRacing()
@@ -91,6 +100,8 @@ public class RacingManager : Singleton<RacingManager>
 
     IEnumerator StartRace()
     {
+        if(type == RacingType.tutorial) {GameManager.SwitchState(GameState.Gameplay); yield break; }
+
         startCount.gameObject.SetActive(true);
         GameManager.SwitchState(GameState.Menu);
         startCount.text = "3";

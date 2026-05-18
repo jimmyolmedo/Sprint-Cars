@@ -7,6 +7,7 @@ public class UI_StartGame : MonoBehaviour
     [SerializeField] protected GameObject startPanel;
     protected float timer;
     [SerializeField] protected int timeToStartGame = 5;
+    [SerializeField] protected bool isTutorial;
     [SerializeField] protected TextMeshProUGUI textStartCount;
 
     protected virtual IEnumerator TimeToStartGame()
@@ -19,7 +20,12 @@ public class UI_StartGame : MonoBehaviour
             timer--;
             yield return new WaitForSeconds(1);
         }
-        LevelsManager.instance.NextLevel();
+        if(isTutorial) {StartTutorial(); } else { LevelsManager.instance.NextLevel(); }
+    }
+
+    void StartTutorial()
+    {
+        SceneManager.instance.LoadScene("Tutorial");
     }
 
 }

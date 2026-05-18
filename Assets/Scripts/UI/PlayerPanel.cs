@@ -54,7 +54,11 @@ public class PlayerPanel : MonoBehaviour
         if(playerReference != null)
         {
             playerName.text = playerReference.PlayerName;
-            playerLap.text = $"{playerReference.CurrentLap.ToString()}/{RacingManager.instance.MaxLap}";
+            if(RacingManager.instance.Type == RacingManager.RacingType.Gameplay)
+            {
+                playerLap.text = $"{playerReference.CurrentLap.ToString()}/{RacingManager.instance.MaxLap}";
+            }
+            else { playerLap.text = " ";}
             playerCoins.text = playerReference.CurrentCoins.ToString();
             CalculateHealthPlayer();
         }

@@ -3657,6 +3657,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SlotCharacterManager
   startPanel: {fileID: 1585439858}
   timeToStartGame: 5
+  isTutorial: 1
   textStartCount: {fileID: 407891968}
   SOcars:
   - {fileID: 11400000, guid: 660a9bb9efcd4ac4584e4001ace8263b, type: 2}

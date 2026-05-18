@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/PlayerSelector.unity
     guid: 0e1530a0cb5e63543981e3c8a5cd4a3f
   - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: 30c2e9d95baa4e24d91649f79f27ac13
+  - enabled: 1
     path: Assets/Scenes/Pista 1.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
