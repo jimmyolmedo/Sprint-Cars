@@ -424,7 +424,7 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         acelerated = false;
         win = false;
-        //transform.rotation = Quaternion.identity;
+        isReady = false;
         spriteRenderer.transform.localRotation = Quaternion.identity;
     }
 

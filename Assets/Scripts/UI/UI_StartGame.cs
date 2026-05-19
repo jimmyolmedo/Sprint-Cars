@@ -13,10 +13,10 @@ public class UI_StartGame : MonoBehaviour
     protected virtual IEnumerator TimeToStartGame()
     {
         timer = timeToStartGame;
-        startPanel.SetActive(true);
+        if(startPanel != null)startPanel.SetActive(true);
         while (timer > 0)
         {
-            textStartCount.text = timer.ToString();
+            if(textStartCount != null)textStartCount.text = timer.ToString();
             timer--;
             yield return new WaitForSeconds(1);
         }
